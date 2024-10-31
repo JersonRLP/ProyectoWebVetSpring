@@ -1,0 +1,172 @@
+<div th:fragment="content">
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Listado de Clientes</h5>
+                </div>
+                    <div th:if="${sucess}!=null" class="alert alert-success alert-dismissible fade show" role="alert">
+					    <span th:text="${sucess}"></span>
+					    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					        <span aria-hidden="true">&times;</span>
+					    </button>
+					</div>
+					
+					<div th:if="${unsucess}!=null" class="alert alert-danger alert-dismissible fade show" role="alert">
+					    <span th:text="${unsucess}"></span>
+					    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					        <span aria-hidden="true">&times;</span>
+					    </button>
+					</div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Clientes</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Listado</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<button type="button" class="btn btn-primary mb-3" title="btn btn-primary" data-toggle="tooltip" onclick="window.location.href='/cliente-nuevo'">Nuevo Cliente</button>
+
+<!-- Hoverable rows start -->
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+
+            <!-- [ striped-table ] start -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-block table-border-style">                 
+                        <!-- table hover -->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+					    			<tr>
+										<th scope="col" class="text-center">Codigo</th>
+										<th scope="col">Nombres</th>
+					    				<th scope="col">Apellidos</th>
+					    				<th scope="col">Dni</th>
+					    				<th scope="col">Distrito</th>
+					    				<th scope="col">Dirección</th>
+					    				<th scope="col">Telefono</th>
+					    				<th scope="col">Correo</th>
+					    				<th></th>
+					    				<th></th>
+					    			</tr>
+					    		</thead>
+					    		<tbody>
+								    <tr th:each="c : ${lstClientes}">
+								        <td th:text="${c.codCliente}" class="text-center align-middle"></td>
+								        <td th:text="${c.nombres}" class="align-middle"></td>
+								        <td th:text="${c.apellidos}" class="align-middle"></td>
+								        <td th:text="${c.dni}" class="align-middle"></td>		
+								        <td th:text="${c.distrito.codDistrito}" class="d-none"></td>						       
+								        <td th:text="${c.distrito.nom_distrito}" class="align-middle"></td>
+								        <td th:text="${c.direccion}" class="align-middle"></td>
+								        <td th:text="${c.telefono}" class="align-middle"></td>
+								        <td th:text="${c.correo}" class="align-middle"></td>
+								        <td th:text="${c.estado}" class="d-none"></td>
+								        <td class="align-middle">
+											<button type="button" class="btn btn-warning btn_editar_cliente">Editar</button>
+					    				</td>
+					    				<td class="align-middle"> 
+						                    <button type="button" class="btn btn-danger deletebtn">Eliminar</button>
+						                </td>
+								    </tr>
+								</tbody>
+                            </table>
+                        </div>
+                                              	
+                    </div>
+                </div>
+            </div>           
+            <!-- [ striped-table ] end -->
+        </div>       
+    </div>
+</div>
+
+
+<!-- Inicio del Modal -->
+<div class="modal fade" id="modal_eliminar_cliente" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title">Eliminar Cliente</h5>
+	        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      	</div>
+		  	<form th:action="@{/eliminarCliente}" method="post">
+	        	<div class="modal-body">
+					<input type="hidden" name="codCliente" id="codigo_cliente">
+ 	  				<span id="nombre_cliente">&nbsp;</span>
+		    	</div>
+		        <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+			        <button type="submit" name="deletedata" class="btn btn-primary">Sí, eliminar</button>
+		        </div>
+			</form>
+    	</div>
+	</div>
+</div>
+<!-- Fin del Modal -->
+
+<!-- Inicio del Modal Actualizar-->
+<div class="modal fade" id="modal_editar_cliente" tabindex="-1" aria-labelledby="editarModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Editar Cliente</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form th:action="@{/actualizarCliente}" method="post">
+				<div class="modal-body">
+					<input type="hidden" name="codCliente" id="codigo_cliente_edit">
+					<div class="mb-3">
+						<label for="nombre_cliente_edit" class="form-label">Nombres:</label>
+						<input type="text" class="form-control" name="nombres" id="nombre_cliente_edit">
+					</div>
+					<div class="mb-3">
+						<label for="apellidos_cliente_edit" class="form-label">Apellidos:</label>
+						<input type="text" class="form-control" name="apellidos" id="apellidos_cliente_edit">
+					</div>
+					<div class="mb-3">
+						<label for="dni_cliente_edit" class="form-label">DNI:</label>
+						<input type="text" class="form-control" name="dni" id="dni_cliente_edit">
+					</div>
+
+                    <div class="mb-3">
+						<label for="distrito_cliente_edit" class="form-label">Distrito:</label>
+						<select id="distrito_cliente_edit" class="form-control" name="distrito">
+						</select>			
+					</div>
+
+					<div class="mb-3">
+						<label for="direccion_cliente_edit" class="form-label">Dirección:</label>
+						<input type="text" class="form-control" name="direccion" id="direccion_cliente_edit">
+					</div>
+					<div class="mb-3">
+						<label for="telefono_cliente_edit" class="form-label">Teléfono:</label>
+						<input type="text" class="form-control" name="telefono" id="telefono_cliente_edit">
+					</div>
+					<div class="mb-3">
+						<label for="email_cliente_edit" class="form-label">Correo:</label>
+						<input type="text" class="form-control" name="correo" id="email_cliente_edit">
+					</div>
+					<input type="hidden" name="estado" id="estado_cliente_edit">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" name="editdata" class="btn btn-primary">Sí, editar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Hoverable rows end -->
+</div>

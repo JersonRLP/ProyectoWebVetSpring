@@ -1,0 +1,79 @@
+<div th:fragment="content">
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Nuevo Cliente</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Clientes</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Nuevo Cliente</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+			
+			<div class="col-md-12">
+			    <!-- general form elements -->
+			    <div class="card card-primary">
+			               	
+					<!-- form start -->
+					<form th:action="@{/grabarCliente}" th:object="${cliente}" method="post" name="formulario" enctype="multipart/form-data">
+						<div class="card-body">
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label for="inputNombre">Nombres:</label>
+									<input th:field="*{nombres}" class="form-control" id="cliente_nuevo_nombres" placeholder="Ingrese nombres del cliente" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputApellidos">Apellidos:</label>
+									<input th:field="*{apellidos}" class="form-control" id="cliente_nuevo_apellidos" placeholder="Ingrese apellidos del cliente" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputNombre">Dni:</label>
+									<input th:field="*{dni}" class="form-control" id="cliente_nuevo_dni" placeholder="Ingrese DNI del cliente" required>
+								</div>
+								<div class="form-group col-md-12">
+									<label for="inputDistrito">Distrito:</label>
+									<select id="cliente_nuevo_distrito" class="form-control" th:field="*{distrito.codDistrito}">
+										<option th:value="-1" th:text="Seleccione"></option>
+										<option th:each="d : ${lstDistritos}" th:value="${d.codDistrito}" th:text="${d.nom_distrito}"></option>
+									</select>
+								</div>														
+								<div class="form-group col-md-6">
+									<label for="inputDireccion">Dirección:</label>
+									<input th:field="*{direccion}" class="form-control" id="cliente_nuevo_direccion" placeholder="Ingrese direccion del cliente" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputTelefono">Teléfono:</label>
+									<input th:field="*{telefono}" class="form-control" id="cliente_nuevo_telefono" placeholder="Ingrese telefono del cliente" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputCorreo">Correo:</label>
+									<input th:field="*{correo}" class="form-control" id="inputCorreo" placeholder="Ingrese correo del cliente" required>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary">Registrar</button>
+							<a href="/cliente-listado" class="btn btn-warning">Listar</a>
+						</div>
+					</form>
+			    </div>
+			    <!-- /.card -->
+			</div>
+			<!-- /.row -->
+
+		</div>
+	</div>
+</div>
+
+</div>

@@ -1,0 +1,148 @@
+<div th:fragment="content">
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Listado de Servicios</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Servicios</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Listado</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<button type="button" class="btn btn-primary mb-3" title="btn btn-primary" data-toggle="tooltip" onclick="window.location.href='/servicio-nuevo'">Nuevo Servicio</button>
+
+<!-- Hoverable rows start -->
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+
+            <!-- [ striped-table ] start -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-block table-border-style">                 
+                        <!-- table hover -->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+					    			<tr>
+										<th scope="col" class="text-center">Código</th>
+										<th scope="col">Nombre</th>
+					    				<th scope="col">Descripción</th>
+					    				<th scope="col">Tipo de Servicio</th>
+					    				<th scope="col" class="text-center">Precio</th>
+					    				<th scope="col" class="text-center">Duración (minutos)</th>
+					    				<th></th>
+					    				<th></th>
+					    			</tr>
+					    		</thead>
+					    		<tbody>
+								    <tr th:each="s : ${lstServicios}">
+								        <td th:text="${s.codServicio}" class="text-center align-middle"></td>
+								        <td th:text="${s.nombre_servicio}" class="align-middle"></td>
+								        <td th:text="${s.descripcion}" class="align-middle"></td>
+								        <td th:text="${s.tipoServicio.codTipoServicio}" class="d-none"></td>
+								        <td th:text="${s.tipoServicio.descripcion_tipo}" class="align-middle"></td>
+								        <td th:text="${s.precio}" class="align-middle text-center"></td>
+								        <td th:text="${s.duracion_estimada}" class="align-middle text-center"></td>
+								        <td th:text="${s.materiales_necesarios}" class="d-none"></td>
+								        <td th:text="${s.estado}" class="d-none"></td>
+								        <td class="align-middle">
+											<button type="button" class="btn btn-warning btn_editar_servicio">Editar</button>
+					    				</td>
+					    				<td class="align-middle"> 
+						                    <button type="button" class="btn btn-danger deletebtn">Eliminar</button>
+						                </td>
+								    </tr>
+								</tbody>
+                            </table>
+                        </div>
+                                              	
+                    </div>
+                </div>
+            </div>           
+            <!-- [ striped-table ] end -->
+        </div>       
+    </div>
+</div>
+
+<!-- Inicio del Modal Actualizar-->
+<div class="modal fade" id="modal_editar_servicio" tabindex="-1" aria-labelledby="editarModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Editar Servicio</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form th:action="@{/actualizarServicio}" method="post">
+				<div class="modal-body">
+					<input type="hidden" name="codServicio" id="codigo_servicio_edit">
+					<div class="mb-3">
+						<label for="nombre_servicio_edit" class="form-label">Nombre del servicio:</label>
+						<input type="text" class="form-control" name="nombre_servicio" id="nombre_servicio_edit">
+					</div>
+					<div class="mb-3">
+						<label for="descripcion_servicio_edit" class="form-label">Descripción:</label>
+						<input type="text" class="form-control" name="descripcion" id="descripcion_servicio_edit">
+					</div>
+					<div class="mb-3">
+						<label for="tipo_servicio_edit" class="form-label">Tipo de servicio:</label>
+						<select id="tipo_servicio_edit" class="form-control" name="tipoServicio">
+						</select>			
+					</div>
+					<div class="mb-3">
+						<label for="precio_servicio_edit" class="form-label">Precio:</label>
+						<input type="text" class="form-control" name="precio" id="precio_servicio_edit">
+					</div>
+					<div class="mb-3">
+						<label for="duracion_estimada_servicio_edit" class="form-label">Duración estimada:</label>
+						<input type="text" class="form-control" name="duracion_estimada" id="duracion_estimada_servicio_edit">
+					</div>
+					<input type="hidden" name="materiales_necesarios" id="materiales_necesarios_servicio_edit">
+					<input type="hidden" name="estado" id="estado_servicio_edit">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" name="editdata" class="btn btn-primary">Sí, editar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Fin del Modal -->
+
+
+<!-- Inicio del Modal -->
+<div class="modal fade" id="modal_eliminar_servicio" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title">Eliminar Servicio</h5>
+	        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      	</div>
+		  	<form th:action="@{/eliminarServicio}" method="post">
+	        	<div class="modal-body">
+					<input type="hidden" name="codServicio" id="codigo_servicio">
+ 	  				</span>&nbsp;<span id="nombre_servicio"></span>
+		    	</div>
+		        <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+			        <button type="submit" name="deletedata" class="btn btn-primary">Sí, eliminar</button>
+		        </div>
+			</form>
+    	</div>
+	</div>
+</div>
+<!-- Fin del Modal -->
+
+<!-- Hoverable rows end -->
+</div>

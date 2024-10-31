@@ -1,0 +1,89 @@
+[33mcommit 4ed9c184bf5dbc708a62ab20e254cc9fc590c120[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m
+Author: xJerson <jerson_10_15@hotmail.com>
+Date:   Fri Nov 3 22:26:32 2023 -0500
+
+    creando la vista de cita-hml y dandole estilos a la vista
+
+[33mcommit c80143ba9904182564001c74cffc7283f88b0a3c[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Fri Nov 3 15:25:51 2023 -0500
+
+    correcion de guardado de imagen
+
+[33mcommit c4a0687010d82bb7cad709c005662fd377ef3cc6[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Fri Nov 3 15:18:43 2023 -0500
+
+    crear mascota
+
+[33mcommit 56b1d5f4f0e32c753a078090e67538125b273a98[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Fri Nov 3 11:49:33 2023 -0500
+
+    centrado vertical tabla mascotas
+
+[33mcommit ae70436b07e754c04afd2465784122107ac55b74[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Fri Nov 3 11:15:17 2023 -0500
+
+    implementacion de la plantilla
+
+[33mcommit da104a85d6efbc5d19d483e37455227a1b0893c9[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 09:29:13 2023 -0500
+
+    otros cambios en el listado mascotas
+
+[33mcommit 86f7ebb0796104848843862cb0bece7bc4e0e08b[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 09:14:58 2023 -0500
+
+    listado de mascotas
+
+[33mcommit 20b18e34d6afe6a53527dd0584e5b3b5441bbb77[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 06:44:42 2023 -0500
+
+    modificacion de la clase Mascota
+
+[33mcommit 492bd16c407c6a717917335bd0556d77f4f91984[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 05:57:34 2023 -0500
+
+    otra prueba
+
+[33mcommit 330723bd52fd437be4974ac26e9c8cfd1122e3db[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 05:44:34 2023 -0500
+
+    listado mascotas controller
+
+[33mcommit 04879ba41d56b5603c4eef75c05c6aa34f2e58d3[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 05:36:34 2023 -0500
+
+    prueba 2
+
+[33mcommit 4e69918020ae2753a0890c49f6bbb5b96d0c657c[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 05:24:09 2023 -0500
+
+    prueba 2
+
+[33mcommit 3719624a1ea0f3bc785bf6f0d12bbe74e17d30c9[m
+Author: Cesar <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 05:20:29 2023 -0500
+
+    prueba
+
+[33mcommit ab2953f20eedb7f429b7c3b2b20a96a5393c04d0[m
+Author: Cibertec <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 04:48:28 2023 -0500
+
+    first commit
+
+[33mcommit 862f24f47aecd7cdd198c0fc84a9bfde3adf169c[m
+Author: Cibertec <i202122731@cibertec.edu.pe>
+Date:   Thu Nov 2 04:46:51 2023 -0500
+
+    first commit

@@ -1,0 +1,75 @@
+<div th:fragment="content">
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Nuevo Servicio</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Servicios</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Nuevo Servicio</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+			
+			<div class="col-md-12">
+			    <!-- general form elements -->
+			    <div class="card card-primary">
+			               	
+					<!-- form start -->
+					<form th:action="@{/grabarServicio}" th:object="${servicio}" method="post" name="formulario" enctype="multipart/form-data">
+						<div class="card-body">
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label for="inputNombre">Nombre del Servicio:</label>
+									<input th:field="*{nombre_servicio}" class="form-control" id="servicio_nuevo_nombre" placeholder="Ingrese el nombre del servicio" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputDescripcion">Descripción:</label>
+									<input th:field="*{descripcion}" class="form-control" id="servicio_nuevo_descripcion" placeholder="Ingrese la descripción del servicio" required>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="inputTipoServicio">Tipo de Servicio:</label>
+									<select id="servicio_nuevo_tipoServicio" class="form-control" th:field="*{tipoServicio.codTipoServicio}">
+										<option th:value="-1" th:text="Seleccione"></option>
+										<option th:each="ts : ${lstTiposServicio}" th:value="${ts.codTipoServicio}" th:text="${ts.descripcion_tipo}"></option>
+									</select>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="inputPrecio">Precio:</label>
+									<input th:field="*{precio}" class="form-control" id="servicio_nuevo_precio" placeholder="Ingrese el precio del servicio" required>
+								</div>
+								<div class="form-group col-md-4">
+								    <label for="inputDuracionEstimada">Duración Estimada (minutos):</label>
+								    <input th:field="*{duracion_estimada}" class="form-control" id="servicio_nuevo_duracion_estimada" placeholder="Ingrese la duración estimada del servicio en minutos" required>
+								</div>
+								<div class="form-group col-md-12">
+								    <label for="inputMateriales">Materiales Necesarios:</label>
+								    <textarea th:field="*{materiales_necesarios}" class="form-control" id="servicio_nuevo_materiales_necesarios" placeholder="Ingrese los materiales necesarios" required></textarea>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary">Registrar</button>
+							<a href="/servicio-listado" class="btn btn-warning">Listar</a>
+						</div>
+					</form>
+			    </div>
+			    <!-- /.card -->
+			</div>
+			<!-- /.row -->
+
+		</div>
+	</div>
+</div>
+
+</div>

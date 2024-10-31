@@ -1,0 +1,183 @@
+<div th:fragment="content">
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Listado de Mascotas</h5>
+                </div>
+                   <div th:if="${sucess}!=null" class="alert alert-success alert-dismissible fade show" role="alert">
+					    <span th:text="${sucess}"></span>
+					    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					        <span aria-hidden="true">&times;</span>
+					    </button>
+					</div>
+					
+					<div th:if="${unsucess}!=null" class="alert alert-danger alert-dismissible fade show" role="alert">
+					    <span th:text="${unsucess}"></span>
+					    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					        <span aria-hidden="true">&times;</span>
+					    </button>
+					</div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Mascotas</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Listado</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<button type="button" class="btn btn-primary mb-3" title="btn btn-primary" data-toggle="tooltip" onclick="window.location.href='/mascota-nueva'">Agregar mascota</button>
+
+<!-- Hoverable rows start -->
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+
+            <!-- [ striped-table ] start -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-block table-border-style">                 
+                        <!-- table hover -->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+					    			<tr>
+										<th scope="col" class="text-center">Codigo</th>
+										<th scope="col" class="text-center">Foto</th>
+										<th scope="col">Nombre</th>
+					    				<th scope="col">Especie</th>
+					    				<th scope="col">Raza</th>
+					    				<th scope="col">Sexo</th>
+					    				<th scope="col" class="text-center">Fecha de Nacimiento</th>
+					    				<th scope="col">Peso</th>
+					    				<th scope="col">Dueño</th>
+					    				<th></th>
+					    				<th></th>
+					    			</tr>
+					    		</thead>
+					    		<tbody>
+								    <tr th:each="m : ${lstMascotas}">
+								        <td th:text="${m.codMascota}" class="text-center align-middle"></td>
+								        <td>
+										    <img th:src="@{'/assets/imagenes/mascotas/' + ${m.foto_mascota}}" alt="Foto" class="img-thumbnail" style="width: 70px;" />
+										</td>
+
+								        <td th:text="${m.nombre_mascota}" class="align-middle"></td>
+								        <td th:text="${m.especie.codEspecie}" class="d-none"></td>	
+								        <td th:text="${m.especie.nombre_especie}" class="align-middle"></td>
+								        <td th:text="${m.raza.codRaza}" class="d-none"></td>	
+								        <td th:text="${m.raza.nombre_raza}" class="align-middle"></td>
+								        <td th:text="${m.sexo}" class="align-middle"></td>
+								        <td th:text="${#dates.format(m.fecha_nacimiento, 'dd-MM-yyyy')}" class="text-center align-middle"></td>
+								        <td th:text="${m.peso}" class="align-middle"></td>
+								        <td th:text="${m.cliente.codCliente}" class="d-none"></td>
+								        <td th:text="${m.chip_identificacion}" class="d-none"></td>	
+								        <td th:text="${m.color}" class="d-none"></td>	
+								        <td th:text="${m.estado}" class="d-none"></td>	
+								        <td th:text="${m.cliente.nombres + ' ' + m.cliente.apellidos}" class="align-middle"></td>
+								        <td class="align-middle">
+											<button type="button" class="btn btn-warning btn_editar_mascota">Editar</button>
+					    				</td>
+					    				<td class="align-middle"> 
+											<button type="button" class="btn btn-danger deletebtn">Eliminar</button>
+					    				</td>					    				
+								    </tr>
+								</tbody>
+                            </table>
+                        </div>
+                                              	
+                    </div>
+                </div>
+            </div>           
+            <!-- [ striped-table ] end -->
+        </div>       
+    </div>
+</div>
+
+<!-- Inicio del Modal Actualizar-->
+<div class="modal fade" id="modal_editar_mascota" tabindex="-1" aria-labelledby="editarModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Editar Mascota</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form th:action="@{/actualizarMascota}" method="post">
+				<div class="modal-body">
+					<input type="hidden" name="codMascota" id="codigo_mascota_edit">
+					<div class="mb-3">
+						<label for="nombre_mascota_edit" class="form-label">Nombre:</label>
+						<input type="text" class="form-control" name="nombre_mascota" id="nombre_mascota_edit">
+					</div>
+					<input type="hidden" name="chip_identificacion" id="chip_identificacion_mascota_edit">
+					<div class="mb-3">
+						<label for="especie_mascota_edit" class="form-label">Especie:</label>
+						<select id="especie_mascota_edit" class="form-control" name="especie">
+						</select>			
+					</div>
+                    <div class="mb-3">
+						<label for="raza_mascota_edit" class="form-label">Raza:</label>
+						<select id="raza_mascota_edit" class="form-control" name="raza">
+						</select>			
+					</div>
+					<input type="hidden" name="color" id="color_mascota_edit">
+                    <div class="mb-3">
+						<label for="sexo_mascota_edit" class="form-label">Sexo:</label>
+						<input type="text" class="form-control" name="sexo" id="sexo_mascota_edit">
+					</div>
+                    <div class="mb-3">
+						<label for="fecha_nacimiento_mascota_edit" class="form-label">Fecha de Nacimiento:</label>
+						<input type="date" class="form-control" name="fecha_nacimiento" id="fecha_nacimiento_mascota_edit">
+					</div>
+                    <div class="mb-3">
+						<label for="peso_mascota_edit" class="form-label">Peso:</label>
+						<input type="text" class="form-control" name="peso" id="peso_mascota_edit">
+					</div>
+					<input type="hidden" name="cliente" id="cliente_mascota_edit">
+					<input type="hidden" name="estado" id="estado_mascota_edit">
+					<input type="hidden" id="foto_mascota_edit" name="foto_mascota">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" name="editdata" class="btn btn-primary">Sí, editar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Fin del Modal -->
+
+
+
+<!-- Inicio del Modal -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editarModalLabel">Eliminar mascota</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      	<form th:action="@{/eliminar}" method="post">
+	      <div class="modal-body">
+			 <input type="hidden" name="codMascota" id="codigo">
+			 </span>&nbsp;<span id="nombreMascota"></span>
+	      </div>
+	      <div class="modal-footer">
+	          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+	          <button type="submit" name="deletedata" class="btn btn-primary">Sí, eliminar</button>
+	      </div>
+	     </form>
+    </div>
+	</div>
+</div>
+<!-- Fin del Modal -->
+
+<!-- Hoverable rows end -->
+</div>

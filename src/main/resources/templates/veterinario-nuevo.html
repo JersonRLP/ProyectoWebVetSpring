@@ -1,0 +1,75 @@
+<div th:fragment="content">
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Nuevo Veterinario</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Veterinarios</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Nuevo Veterinario</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+			
+			<div class="col-md-12">
+			    <!-- general form elements -->
+			    <div class="card card-primary">
+			               	
+					<!-- form start -->
+					<form th:action="@{/grabarVeterinario}" th:object="${veterinario}" method="post" name="formulario" enctype="multipart/form-data">
+						<div class="card-body">
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label for="inputNombres">Nombres:</label>
+									<input th:field="*{nombres_veterinario}" class="form-control" id="veterinario_nuevo_nombres" placeholder="Ingrese nombres del veterinario" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputApellidos">Apellidos:</label>
+									<input th:field="*{apellidos_veterinario}" class="form-control" id="veterinario_nuevo_apellidos" placeholder="Ingrese apellidos del veterinario" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputDni">DNI:</label>
+									<input th:field="*{dni}" class="form-control" id="veterinario_nuevo_dni" placeholder="Ingrese DNI del veterinario" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputEspecialidad">Especialidad:</label>
+									<input th:field="*{especialidad}" class="form-control" id="veterinario_nuevo_especialidad" placeholder="Ingrese especialidad del veterinario" required>
+								</div>
+								<div class="form-group col-md-12">
+									<label for="inputDistrito">Distrito:</label>
+									<select id="veterinario_nuevo_distrito" class="form-control" th:field="*{distrito.codDistrito}">
+										<option th:value="-1" th:text="Seleccione"></option>
+										<option th:each="d : ${lstDistritos}" th:value="${d.codDistrito}" th:text="${d.nom_distrito}"></option>
+									</select>
+								</div>														
+								<div class="form-group col-md-6">
+									<label for="inputDireccion">Dirección:</label>
+									<input th:field="*{direccion}" class="form-control" id="veterinario_nuevo_direccion" placeholder="Ingrese dirección del veterinario" required>
+								</div>								
+							</div>
+							<button type="submit" class="btn btn-primary">Registrar</button>
+							<a href="/veterinario-listado" class="btn btn-warning">Listar</a>
+						</div>
+					</form>
+			    </div>
+			    <!-- /.card -->
+			</div>
+			<!-- /.row -->
+
+		</div>
+	</div>
+</div>
+
+</div>

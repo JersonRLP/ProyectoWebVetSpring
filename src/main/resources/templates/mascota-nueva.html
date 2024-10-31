@@ -1,0 +1,119 @@
+<div th:fragment="content">
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Nueva Mascota</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Mascotas</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Nueva Mascota</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content-header -->
+
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="row">
+			
+			<div class="col-md-12">
+			    <!-- general form elements -->
+			    <div class="card card-primary">
+			               
+			     
+			
+					
+					<!-- form start -->
+					<form th:action="@{/grabarMascota}" th:object="${mascota}" method="post" name="formulario" enctype="multipart/form-data">
+						<div class="card-body">
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label for="inputNombre">Nombre de la mascota</label>
+									<input th:field="*{nombre_mascota}" class="form-control" id="inputNombre" placeholder="Ingrese nombre de la mascota" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputChip">Chip de Identificación</label>
+									<input th:field="*{chip_identificacion}" class="form-control" id="inputChip" placeholder="Ingrese el chip de identificación" required>
+								</div>
+								<div class="form-group col-md-12">
+									<label for="inputCliente">Dueño</label>
+									<select id="inputCliente" class="form-control" th:field="*{cliente.codCliente}">
+										<option th:value="-1" th:text="Seleccione"></option>
+										<option th:each="c : ${lstClientes}" th:value="${c.codCliente}" th:text="${c.nombres + ' ' + c.apellidos}"></option>
+									</select>
+								</div>											
+								<div class="form-group col-md-6">
+									<label for="inputEspecie">Especie</label>
+									<select id="inputEspecie" class="form-control" th:field="*{especie.codEspecie}">
+										<option th:value="-1" th:text="Seleccione"></option>
+										<option th:each="e : ${lstEspecies}" th:value="${e.codEspecie}" th:text="${e.nombre_especie}"></option>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputRaza">Raza</label>
+									<select id="inputRaza" class="form-control" th:field="*{raza.codRaza}">
+										<option th:value="-1" th:text="Seleccione"></option>
+										<option th:each="r : ${lstRazas}" th:value="${r.codRaza}" th:text="${r.nombre_raza}"></option>					
+									</select>
+								</div>				
+								<div class="form-group col-md-3">
+									<label for="inputColor">Color</label>
+									<input th:field="*{color}" class="form-control" id="inputColor" placeholder="Ingrese el color de la mascota" required>
+								</div>
+								<div class="form-group col-md-3">
+									<label for="inputEstado">Sexo</label>
+									<select id="inputEstado" class="form-control" th:field="*{sexo}">
+										<option th:value="-1" th:text="Seleccione"></option>
+										<option th:value="Hembra" th:text="Hembra"></option>
+										<option th:value="Macho" th:text="Macho"></option>
+									</select>
+								</div>
+								<div class="form-group col-md-3">
+								    <label for="inputFechaNacimiento">Fecha de Nacimiento</label>
+								    <input th:field="*{fecha_nacimiento}" class="form-control" id="inputFechaNacimiento" type="date" required>
+								</div>
+								<div class="form-group col-md-3">
+								    <label for="inputPeso">Peso de la mascota (en kilogramos)</label>
+								    <input th:field="*{peso}" class="form-control" id="inputPeso" type="number" step="0.01" placeholder="Peso en kilogramos" required>
+								</div>
+								<div class="form-group col-md-12">
+								    <label for="imagen">Imagen</label>
+								    <input type="file" class="form-control" name="imagen" id="imagen" onchange="previewImage(event)">
+								</div>
+								<div class="form-group col-md-12 mb-4">
+								    <img id="create_img_preview" alt="Producto Image" class="img-thumbnail" style="max-width: 200px;" />
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary">Registrar</button>
+							<a href="/mascota-listado" class="btn btn-warning">Listar</a>
+						</div>
+					</form>
+			    </div>
+			    <!-- /.card -->
+			</div>
+			<!-- /.row -->
+
+		</div>
+	</div>
+</div>
+
+<script>
+	function previewImage(event) {
+	    var reader = new FileReader();
+	    reader.onload = function() {
+	        var output = document.getElementById('create_img_preview');
+	        output.src = reader.result;
+	    }
+	    reader.readAsDataURL(event.target.files[0]);
+	}
+</script>
+
+
+</div>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="layout  :: head">
+<meta charset="UTF-8">
+<title>Consultas</title>
+</head>
+
+<body>
+	<style>
+	  body {
+    background-image: url('fondo/fondocons.jpg');
+    background-size: contain; /* Ajusta la imagen para que quepa dentro del body sin cortar */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center center; /* Centra la imagen tanto vertical como horizontalmente */
+    height: 100vh; /* Establece la altura del body al 100% del viewport height */
+    margin: 0; /* Elimina el margen por defecto del body */
+	background-color: #F5F5F5;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo{
+	color: #3F4D67;
+	font-size: 45px;
+}
+.table-transparent {
+    background-color: transparent; /* Fondo transparente para la tabla */
+}
+
+.table-transparent thead th {
+    background-color: transparent; /* Fondo transparente para las celdas de encabezado */
+    border-color: transparent; /* Bordes transparentes para las celdas de encabezado */
+}
+
+.table-transparent tbody td {
+    background-color: rgba(255, 255, 255, 0.5); /* Fondo semi-transparente para las celdas del cuerpo */
+    border-color: transparent; /* Bordes transparentes para las celdas del cuerpo */
+}
+ .table thead th {
+            color:#1DDFC4;
+            font-size: 20px;
+        }
+         .table thead th {
+            border-bottom: 2px solid #1DDFC4;
+        }
+ .labelcolor  {
+	  color:#1DDFC4;
+	   font-size: 20px;
+	   font-weight: bold;
+	   
+ }     
+        
+</style>
+
+	<script>
+		
+		
+		function Consulta() {
+    var codVeterinario = $('#codVeterinario').val();
+    var fecha_cita = $('#fecha_cita').val();
+
+			// Verificar que codVeterinario y fecha_cita tengan valores antes de la llamada AJAX
+			if (codVeterinario === "-1") {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Por favor, seleccione un veterinario válido',
+				});
+				return;
+			}
+
+			if (!fecha_cita) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Por favor, ingrese una fecha de cita válida',
+				});
+				return;
+			}
+
+		  var ConsultaTable = $("#consulta tbody");
+		    ConsultaTable.empty(); // Limpiar la tabla
+		
+		    // Agregar una fila con un mensaje predeterminado
+		    ConsultaTable.append("<tr><td colspan='4'>Realizando consulta...</td></tr>");
+
+   
+    $.ajax({
+         url: "/consulta1",
+                type: "GET",
+                data: { codVeterinario: codVeterinario ,fecha_cita:fecha_cita},
+        success: function (response) {
+			
+			console.log("Respuesta del servidor:", response);
+			
+       
+           
+            ConsultaTable.empty(); // Limpiar la tabla
+
+			 
+            if (response.cons && response.cons.length > 0) {
+                response.cons.forEach(function (cons) {
+                    ConsultaTable.append("<tr><td>" + cons.cliente.nombres +
+                        "</td><td>" + cons.mascota.nombre_mascota +
+                        "</td><td>" + cons.fecha_cita +
+                        "</td><td>" + cons.hora_cita +
+                        "</td></tr>");
+                });
+            } else {
+				
+                ConsultaTable.append("<tr><td colspan='4'>No se encontraron Consultas.</td></tr>");
+            }
+           
+        },
+        error: function (error) {
+			
+            console.error("Error en la solicitud AJAX:", error);
+             Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al realizar la consulta. Por favor, inténtelo de nuevo.',
+            });
+        }
+    });
+}
+		
+
+	function ConsultaPago() {
+    var fecha = $('#fecha').val();
+    
+
+	
+
+			if (!fecha) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Por favor, ingrese una fecha válida',
+				});
+				return;
+			}
+
+		  var ConsultaTable = $("#consultaTotal tbody");
+		    ConsultaTable.empty(); // Limpiar la tabla
+		
+		    // Agregar una fila con un mensaje predeterminado
+		    ConsultaTable.append("<tr><td colspan='2'>Realizando consulta...</td></tr>");
+
+   
+    $.ajax({
+         url: "/consulta2",
+                type: "GET",
+                data: { fecha: fecha},
+        success: function (response) {
+			
+			console.log("Respuesta del servidor:", response);
+			
+       
+           
+            ConsultaTable.empty(); // Limpiar la tabla
+
+				 if (response.cons2.length > 0) {
+				
+                response.cons2.forEach(function (cons2) {
+					
+                    ConsultaTable.append("<tr><td>" + cons2[0] + 
+										"</td><td>" + cons2[1] + 
+										"</td></tr>");
+                });
+            } else {
+				
+            ConsultaTable.append("<tr><td colspan='2'>No se encontraron Consultas.</td></tr>");
+            
+          }
+           
+        },
+        error: function (error) {
+			
+            console.error("Error en la solicitud AJAX:", error);
+        }
+    });
+}		 
+		 
+	</script>
+
+
+	
+		<nav th:replace="layout :: nav">
+	</nav>
+	
+			<header th:replace="layout :: header">
+		
+	</header>
+	
+	
+	<div class="pcoded-main-container" > 
+				<div class="page-header" style="margin-left: 30px;">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Listado de Mascotas</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Mascotas</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Consultas</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+		
+		
+<div class="container text-center mt-5" >
+	<h1 class="titulo">Consultas Por Dia</h1>
+	
+			<form id="FormConsulta1">
+		<!--	<form th:action="@{/consulta1}" method="get" class="mb-2"> -->
+			<label for="codVeterinario">Código del Vet : </label>
+			<div style="margin-left: 590px;">
+						<select id="codVeterinario" class="form-select" name="codVeterinario" style="width: 150px;" required>
+				<option th:value="-1" th:text="Seleccione"></option>
+				<option th:each="v : ${listVet}" th:value="${v.codVeterinario}" th:text="${v.nombres_veterinario}" ></option>
+			</select>
+			</div>
+			
+			<label class="labelcolor" for="fecha">Fecha de la cita: </label>
+			<input type="date" name="fecha_cita" id="fecha_cita" required>
+			<button type="button" class="btn btn-primary" onclick="Consulta()">Buscar</button>
+			
+			</form>
+	
+	<table class="table table-transparent consulta" id="consulta">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Mascota</th>
+            <th>fecha</th>
+            <th>Hora</th>
+        </tr>
+    </thead>
+    <tbody>
+         <tr th:if="${noHayConsultas}">
+            <td colspan="4" class="text-center">Realiza una búsqueda por favor</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+</div>
+
+<div class="container text-center mt-5">
+ <h1 class="titulo">Consulta Total Venta Por Dia</h1>
+ 
+ <form id="FormConsulta2">
+ <!-- <form th:action="@{/consulta2}" method="get" class="mb-2"> -->
+    <label for="fechacons">Fecha:</label>
+    <input type="date" name="fecha" id="fecha" required>
+    <button type="button" class="btn btn-primary" onclick="ConsultaPago()">Buscar</button>|
+    <button type="button" class="btn btn-success btnmodal">Lista de Pago</button>
+</form>
+
+ 
+ 	
+	<table  class="table table-transparent consultaTotal" id="consultaTotal">
+		<thead>
+			<tr>
+				<th>Fecha del Pago</th>
+				<th>Total Recaudado</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			 <tr th:if="${noHayConsultas}">
+            <td colspan="4" class="text-center">Realiza una búsqueda por favor</td>
+        </tr>
+		</tbody>
+		
+	</table>
+ 
+</div>
+
+	</div>
+	
+	
+		<!-- Modal -->
+<div class="modal fade" id="AbrirModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">REGISTRAR PAGO</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    	  <div class="modal-body">
+			 <form action="/consultas" method="post">
+    		<button type="submit" name="exportar" class="btn btn-danger mt-2">Exportar PDF</button>|
+    		<button type="submit" name="graficar" class="btn btn-info mt-2">Graficar</button>
+   			 </form>
+
+			  <table  class="table table-hover">
+		<thead>
+			<tr>
+				<th>Codigo Pago</th>
+				<th>Codigo Cita</th>
+				<th>Monto Toal</th>
+				<th>Fecha de Pago</th>
+				<th>Tipo de Pago</th>
+			</tr>
+		</thead>
+		<tbody >
+			<tr th:each="pago : ${listPagos}">
+			<td th:text="${pago.cod_pago}"></td>
+            <td th:text="${pago.cita.codCita}"></td>
+            <td th:text="${pago.monto_total}"></td>
+            <td th:text="${pago.fecha_hora_pago}"></td>
+            <td th:text="${pago.tipo_comprobante}"></td>
+           
+			</tr>
+		</tbody>
+		
+	</table>
+			  
+			  
+		  </div>
+
+    	  </div>
+    	  </div>
+      </div>
+
+    </div>
+
+  
+         <script>
+	$(document).ready(function(){
+		$('.btnmodal').on('click',function(){
+			$('#AbrirModal').modal('show');
+	
+		})
+	});
+	
+
+</script>
+	
+	
+	
+	
+	
+	
+</body>
+<script src="assets/js/vendor-all.min.js"></script>
+	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/pcoded.min.js"></script>
+    
+	
+	
+
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="layout  :: head">
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head> 
+	
+<style>
+	  body {
+    background-image: url('fondo/fondo.jpg');
+    background-size: contain; /* Ajusta la imagen para que quepa dentro del body sin cortar */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center center; /* Centra la imagen tanto vertical como horizontalmente */
+    height: 100vh; /* Establece la altura del body al 100% del viewport height */
+    margin: 0; /* Elimina el margen por defecto del body */
+
+    align-items: center;
+    justify-content: center;
+}
+.labelstylo {
+    color: rgb(0, 0, 0); /* Color del texto */
+    font-style: italic; /* Estilo cursiva */
+    font-weight: bold; /* Peso de la fuente */
+    font-family: 'Arial Black', sans-serif; /* Usa Arial Black y, si no está disponible, usa una fuente genérica sans-serif */
+    -webkit-text-stroke: 1px rgb(255, 255, 255); /* Borde negro de 1 píxel para navegadores basados en WebKit (como Chrome y Safari) */
+     font-size: 24px; /* Tamaño del texto en píxeles */
+}
+
+/* Para navegadores que no admiten text-stroke, se recomienda proporcionar una versión de respaldo sin borde */
+@supports not (-webkit-text-stroke: 1px rgb(255, 255, 255)) {
+    label {
+        text-shadow: 1px 1px 1px rgb(255, 255, 255); /* Sombra negra como respaldo */
+    }
+}
+
+h1{
+	 color: rgb(0, 0, 0); /* Color del texto */
+    font-style: italic; /* Estilo cursiva */
+    font-weight: bold; /* Peso de la fuente */
+    font-family: 'Arial Black', sans-serif; /* Usa Arial Black y, si no está disponible, usa una fuente genérica sans-serif */
+    -webkit-text-stroke: 1px rgb(255, 255, 255); /* Borde negro de 1 píxel para navegadores basados en WebKit (como Chrome y Safari) */
+	font-size: 50px;	
+	
+}
+
+</style>
+<body>
+	
+	
+
+	
+	
+	
+		<nav th:replace="layout :: nav">
+	</nav>
+	
+	
+		
+			<header th:replace="layout :: header">
+		
+	</header>
+
+	
+	
+	<div class="pcoded-main-container" > 
+		
+		
+		
+		<div class="page-header" style="margin-left: 30px;">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Listado de Mascotas</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Mascotas</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Registrar citas</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+		
+		 	
+		<h1 align =center>Regitrar Cita</h1> 
+		
+		<form th:action="@{/savecita}" th:object="${cita}" method="post" class="form-control" style="background: rgba(255, 255, 255, 0.5);"> 
+			<div id="grupo1" style="margin-left: 410px;">
+    	<div class="form-group row g-3 align-items-center">
+		<div class="col-auto">	
+        <label for="inputCliente" class="form-label labelstylo">Cliente</label>
+		</div>
+        <div class="col-auto">
+            <select id="inputCliente" class="form-select" th:field="*{cliente.codCliente}" name="cod_cliente">
+                <option th:value="-1" th:text="Seleccione"></option>
+                <option th:each="cli : ${listClientes}" th:value="${cli.codCliente}" th:text="${cli.nombres}"></option>
+            </select>
+        </div>
+        <div class="col-auto">
+        <label for="inputMascota" class="form-label labelstylo">Mascota</label>
+        </div>
+        <div class="col-auto">
+            <select id="inputMascota" class="form-select" th:field="*{mascota.codMascota}">
+                <option th:value="-1" th:text="Seleccione"></option>
+
+            </select>
+        </div>
+    	</div>
+    	</div>
+			
+			
+			<div id="grupo1" style="margin-left: 410px;">
+				<div class="form-group row g-3 align-items-center">
+        <div class="col-auto">
+        <label for="inputVeterinario" class="form-label labelstylo">Veterinario</label>
+        </div>
+        <div class="col-auto">
+			<select id="inputVet" class="form-select" th:field="*{vet.codVeterinario}">
+				<option th:value="-1" th:text="Seleccione"></option>
+				<option th:each="v : ${listVet}" th:value="${v.codVeterinario}" th:text="${v.nombres_veterinario}"></option>
+			</select>
+        </div>
+        <div class="col-auto">
+        <label for="inputServicio" class="form-label labelstylo">Servicio</label>
+        </div>
+        <div class="col-auto">
+			<select id="inputVet" class="form-select" th:field="*{servicio.codServicio}">
+				<option th:value="-1" th:text="Seleccione"></option>
+				<option th:each="s : ${listServ}" th:value="${s.codServicio}" th:text="${s.nombre_servicio}"></option>
+			</select>
+        </div>
+    </div>
+			</div>
+
+
+
+						
+						<div id="grupo2" style="margin-left: 410px;">
+								<div class="row g-3 align-items-center mt-2">
+							<div class="col-auto">
+								<label for="cod_cliente" class="form-label labelstylo">Fecha cita</label>
+							</div>
+							<div class="col-auto">
+								<input type="date" th:field="*{fecha_cita}" id="inputPassword6" class="form-control input-date" placeholder="Select Date"  required>
+							</div>
+							<div class="col-auto">
+								<label for="inputnombre" class="form-label labelstylo">Hora cita</label>
+							</div>
+							
+							<div class="col-auto">
+								<input type="time" th:field="*{hora_cita}" id="cod_mascota" class="form-control input-date" placeholder="Select Time" >					
+							</div>
+							</div>
+						</div>
+						<div id="grupo1" style="margin-left: 410px;">
+							<div class="form-group row g-3 align-items-center mt-3">
+						<div class="col-auto">
+								<label for="inputnombre" class="form-label labelstylo">Duracion Estimada</label>
+							</div>
+							<div class="col-auto">
+								<input type="time"  th:field="*{duracion_estimada}" id="cod_mascota" class="form-control input-date"placeholder="Select Time">
+							</div>
+								<div class="col-auto">
+									<label for="duracion" class="form-label labelstylo">Estado Cita</label>
+								</div>
+							<div class="col-auto">
+								<select id="inputVet" class="form-select" th:field="*{estado_cita}">
+									<option th:value="-1" th:text="Seleccione"></option>
+									<option th:value="Agendada" th:text="Agendada"></option>
+									<option th:value="Cancelada" th:text="Cancelada"></option>
+								</select>
+							</div>
+							</div>
+						</div>
+						
+					
+						
+						<div id="botones" class="text-center">
+							<button type="submit" class="btn btn-primary">Guardar</button>
+							<a href="/vercita" class="btn btn-warning">Ver Cita</a>
+	 					</div>
+	 	</form>
+	 	
+
+		<script>
+			
+			config2 ={
+					
+					locale: "es"
+			}
+			
+		flatpickr("input[type=date]",config2);	
+
+			config = {
+				enableTime: true,
+				noCalendar: true,
+				dateFormat: "H:i",
+			}
+			flatpickr("input[type=time]", config);		
+		</script>
+		
+		
+		</div>
+
+
+
+
+</body>
+
+
+
+
+<script src="assets/js/vendor-all.min.js"></script>
+	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/pcoded.min.js"></script>
+    
+    <script src="js/js.js"></script>	
+
+
+</html>

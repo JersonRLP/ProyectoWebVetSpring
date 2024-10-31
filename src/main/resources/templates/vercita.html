@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="layout  :: head">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<body>
+	<style>
+body {
+    background-image: url('fondo/fondohistorial.png');
+    background-size: contain; /* Ajusta la imagen para que quepa dentro del body sin cortar */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center center; /* Centra la imagen tanto vertical como horizontalmente */
+    height: 100vh; /* Establece la altura del body al 100% del viewport height */
+    margin: 0; /* Elimina el margen por defecto del body */
+
+    align-items: center;
+    justify-content: center;
+}
+
+	</style>
+		
+	
+		<nav th:replace="layout :: nav">
+	</nav>
+	
+			<header th:replace="layout :: header">
+		
+	</header>
+
+<div class="pcoded-main-container" > 
+	
+		
+		<div class="page-header"  style="margin-left: 30px;">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Listado de Historias</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/inicio"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Mascotas</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Historial de citas</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+	
+	<h1 class="mt-3" style="text-align: center;">HISTORIAL DE CITAS</h1>
+	
+	<div id="alert-container"></div>
+
+
+
+	<div class="container mt-5">
+		
+		 <table id="table" class="table table-striped display" style="width:100%;">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Codigo de Cita</th>
+                <th>Cliente</th>
+                <th>Mascota</th>
+                <th>Fecha de Cita</th>
+                <th>Hora de Cita</th>
+                <th>Servicio</th>
+                <th>Veterinario</th>
+                <th>Duracion</th>
+                <th>Estado</th>
+                <th>Accion</th>
+                
+            </tr>
+        </thead>
+        <tbody>		
+            <tr th:each="c : ${listCitas}">
+                <td th:text="${c.codCita}"></td>
+                <td th:text="${c.cliente.nombres}"></td>
+                <td th:text="${c.mascota.nombre_mascota}"></td>
+                <td th:text="${#dates.format(c.fecha_cita,'dd-MM-yyyy')}"></td>
+                <td th:text="${c.hora_cita.substring(0,5)}"></td>
+                <td th:text="${c.servicio.nombre_servicio}"></td>
+                <td th:text="${c.vet.nombres_veterinario}"></td>
+                <td th:text="${c.duracion_estimada.substring(0,5)}"></td>
+                <td th:text="${c.estado_cita}"></td>
+				<!-- Button trigger modal -->
+				<td>
+					<button type="button" class="btn btn-success btnmodal"
+						 th:classappend="${codigosCitasPagadas.contains(c.codCita) ? 'btn btn-danger' : 'btn btn-success'}"
+                        th:text="${codigosCitasPagadas.contains(c.codCita) ? 'Pagado' : 'Pagar'}"
+                        th:disabled="${codigosCitasPagadas.contains(c.codCita)}">
+					Pagar
+				</button>
+				
+				</td>
+				
+            </tr>
+            
+        </tbody>
+        
+
+    </table>
+    
+  	
+	</div>
+
+	
+	
+	<!-- Modal -->
+<div class="modal fade" id="AbrirModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">REGISTRAR PAGO</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+			<form id="registroForm">
+		<!--	<form th:action="@{/SavePago}"  method="post" id="form-registro"> -->
+				<table class="table">
+					<tr>
+						<td>
+							<label for="codigo" class="form-label">Codigo : </label>
+						</td>
+						<td>
+							<input type="number" class="form-control" name="codigocita" id="codigocita" style="width: 150px;" readonly>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="total" class="form-label">Monto Total : </label>
+						</td>
+						<td>
+							<input type="number" name="monto_total" id="monto_total" class="form-control">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="FechaPago" class="form-label">Fecha de Pago : </label>
+						</td>
+						<td>
+							<input type="date" name="fecha_hora_pago" class="form-control" id="fecha_hora_pago" readonly>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="Comprobante" class="form-label">Comprobante : </label>
+						</td>
+						<td>
+				
+							<select id="tipo_comprobante" class="form-control" name="tipo_comprobante" required>
+								<option th:value="-1" th:text="Seleccione"></option>
+								<option th:value="Boleta" th:text="Boleta"></option>
+								<option th:value="Factura" th:text="Factura"></option>
+							</select>
+						</td>
+					</tr>
+
+				</table>
+				<div class="text-center mt-2">
+					<button type="button" class="btn btn-primary"  onclick="registrarPagos()">Realizar Pago</button>|
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+				
+				</div>
+				<script>
+					document.getElementById('fecha_hora_pago').valueAsDate = new Date();
+				</script>
+			</form>
+			
+			
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+	
+	<script>
+$(document).ready(function(){
+    $('.table').on('click','.btnmodal',function(){
+        $('#AbrirModal').modal('show');
+        $tr = $(this).closest('tr');
+        var data = $tr.children("td").map(function(){
+            return $(this).text();
+        }).get();
+        console.log(data);
+        $('#codigocita').val(data[0]);
+        $('#monto_total').val('');
+        
+        // Selecciona el elemento select
+        var select = $('#tipo_comprobante');
+
+        // Limpia el select y agrega la opción "Seleccione" al principio
+        select.empty();
+        select.append($('<option>').val('').text('Seleccione'));
+
+        // Agrega las opciones adicionales al select
+        select.append($('<option>').val('Boleta').text('Boleta'));
+        select.append($('<option>').val('Factura').text('Factura'));
+    });
+     
+});
+
+function registrarPagos() {
+    var codigocita = $('#codigocita').val();
+    var monto_total = $('#monto_total').val();
+    var fecha_hora_pago = $('#fecha_hora_pago').val();
+    var tipo_comprobante = $('#tipo_comprobante').val();
+
+    // Verificar que codigocita tenga un valor antes de la llamada AJAX
+    if (!codigocita) {
+        alert('Código de cita no válido');
+        return;
+    }
+
+    // Validación correcta del monto_total
+    if (isNaN(monto_total) || monto_total <= 0) {
+        alert('Monto no válido');
+        return;
+    }
+
+    var datosRegistro = {
+        monto_total: monto_total,
+        fecha_hora_pago: fecha_hora_pago,
+        tipo_comprobante: tipo_comprobante
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/SavePago?codigocita=' + codigocita,
+        // contentType: 'application/json',  // Comentado para enviar datos como formulario (x-www-form-urlencoded)
+        data: datosRegistro,  // No es necesario JSON.stringify para enviar como formulario
+        success: function (response, textStatus, xhr) {
+            if (xhr.status === 200) {
+                // Éxito: Mostrar mensaje de alerta de éxito
+                mostrarAlerta('success', response);
+            } else {
+                // Error: Mostrar mensaje de alerta de error
+                mostrarAlerta('danger', response);
+            }
+        },
+        error: function (xhr, status, error) {
+            // Manejar el error
+            if (xhr.status === 400) {
+                // Mostrar mensaje de alerta de error específico para el código de respuesta 400
+                mostrarAlerta('danger', xhr.responseText);
+            } else {
+                console.error('Error al registrar el pago:', xhr.status, error);
+                alert('Hubo un error al registrar el pago. Por favor, inténtelo de nuevo.');
+            }
+        }
+    });
+}
+
+
+function mostrarAlerta(tipo, mensaje) {
+    var alertDiv = $('<div class="alert alert-' + tipo + ' alert-dismissible" role="alert">' +
+                     '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                     '<span aria-hidden="true">&times;</span></button>' + mensaje + '</div>');
+
+    $('#alert-container').append(alertDiv);
+    setTimeout(function() {
+        alertDiv.alert('close');
+    }, 5000);
+}
+
+
+
+	</script>
+	
+	
+	<script>
+		new DataTable('#table', {
+			  language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+    		},
+			     
+            
+			dom: 'Bfrtip',
+			buttons: [	
+	 
+				{
+				extend:    'excelHtml5',
+				text:      '<i class="bi bi-file-earmark-excel"></i> ',
+				titleAttr: 'Exportar a Excel',
+				className: 'btn btn-success'
+			},
+			  {
+				extend:    'pdfHtml5',
+				text:      '<i class="bi bi-filetype-pdf"></i>',
+				titleAttr: 'Exportar a PDF',
+				className: 'btn btn-danger'
+			},
+			  	
+			  {
+                extend: 'print',
+                text:      '<i class="bi bi-printer"></i>',
+                titleAttr: 'Imprimir',
+                className: 'btn btn-warning',
+                exportOptions: {
+                    columns: ':visible'
+                }
+             },
+				{
+					text: 'Registrar Cita',
+					action: function (e, dt, node, config) {
+						window.location.href = '/citas';
+					},
+					className: 'btn btn-info'
+				},
+
+             
+             
+
+            ],
+
+    } );
+	
+	</script>
+	
+<script src="assets/js/vendor-all.min.js"></script>
+	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/pcoded.min.js"></script>
+    
+	
+	
+	
+</div>
+
+
+</body>
+</html>
